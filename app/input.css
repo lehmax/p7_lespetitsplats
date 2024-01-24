@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+small {
+  @apply block text-sm text-gray;
+}
+
+ul > li {
+  @apply px-4 py-2 text-sm hover:bg-yellow;
+}
+
+.active {
+  @apply font-bold bg-yellow;
+}
