@@ -7,10 +7,20 @@ small {
   @apply block text-sm text-gray;
 }
 
-ul > li {
-  @apply px-4 py-2 text-sm hover:bg-yellow;
+.active {
+  @apply bg-yellow;
 }
 
-.active {
-  @apply font-bold bg-yellow;
+.active:hover i {
+  opacity: 1;
+}
+
+[aria-expanded='true'] {
+  > i {
+    @apply rotate-180;
+  }
+}
+
+.error {
+  @apply outline outline-4 outline-rose-500;
 }

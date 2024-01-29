@@ -5,14 +5,11 @@
  * @param {string} recipeData.image - The image URL of the recipe.
  * @param {string} recipeData.name - The name of the recipe.
  * @param {number} recipeData.servings - The number of servings for the recipe.
- * @param {Array<Object>} recipeData.ingredients - The list of ingredients for the recipe.
- * @param {string} recipeData.ingredients[].ingredient - The name of the ingredient.
- * @param {number} recipeData.ingredients[].quantity - The quantity of the ingredient.
- * @param {string} recipeData.ingredients[].unit - The unit of measurement for the ingredient.
- * @param {number} recipeData.time - The cooking time in minutes.
+ * @param {Array} recipeData.ingredients - The list of ingredients for the recipe.
+ * @param {number} recipeData.time - The cooking time in minutes for the recipe.
  * @param {string} recipeData.description - The description of the recipe.
  * @param {string} recipeData.appliance - The appliance required for the recipe.
- * @param {Array<string>} recipeData.ustensils - The list of utensils required for the recipe.
+ * @param {Array} recipeData.ustensils - The list of utensils required for the recipe.
  * @returns {Object} - The recipe object.
  */
 export const createRecipe = ({
@@ -26,7 +23,7 @@ export const createRecipe = ({
   appliance,
   ustensils
 }) => {
-  const getIngredients = () => {
+  const getIngredientsHTML = () => {
     return ingredients
       .map(({ ingredient, quantity, unit }) => {
         return `
@@ -38,7 +35,7 @@ export const createRecipe = ({
       .join('')
   }
 
-  const getElement = () => {
+  const getHTML = () => {
     return `
       <article class="w-full bg-white rounded-lg md:max-w-380">
         <div class="relative">
@@ -62,7 +59,7 @@ export const createRecipe = ({
           </div>
           <div class="mt-9">
             <h5 class="uppercase text-md text-gray">ingrédient</h5>
-            <dl class="grid grid-cols-2 my-4 gap-y-5 gap-x-20">${getIngredients()}</dl>
+            <div class="grid grid-cols-2 my-4 gap-y-5 gap-x-20">${getIngredientsHTML()}</div>
           </div>
         </div>
       </article>
@@ -78,6 +75,6 @@ export const createRecipe = ({
     description,
     appliance,
     ustensils,
-    getElement
+    getHTML
   }
 }

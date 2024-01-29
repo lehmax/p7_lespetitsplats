@@ -8,14 +8,6 @@ module.exports = {
       lg: '976px',
       xl: '1440px'
     },
-    colors: {
-      white: '#FFFFFF',
-      gray: '#7A7A7A',
-      'gray-dark': '#1B1B1B',
-      'gray-mid': '#C6C6C6',
-      'gray-light': '#EDEDED',
-      yellow: '#FFD15B'
-    },
     fontFamily: {
       sans: ['Manrope', 'Helvetica', 'sans-serif'],
       heavy: ['Anton', 'Impact', 'Arial Black', 'sans-serif']
@@ -54,6 +46,14 @@ module.exports = {
     extend: {
       maxWidth: {
         380: '23.75rem'
+      },
+      colors: {
+        white: '#FFFFFF',
+        gray: '#7A7A7A',
+        'gray-dark': '#1B1B1B',
+        'gray-mid': '#C6C6C6',
+        'gray-light': '#EDEDED',
+        yellow: '#FFD15B'
       }
     }
   },

@@ -7,7 +7,7 @@
       name="description"
       content="Trouve facilement des recettes de cuisine."
     />
-    <link rel="icon" type="image/png" href="assets/images/favicon.svg" />
+    <link rel="icon" type="image/png" href="favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -38,27 +38,18 @@
           DÉLICIEUSES
         </h2>
         <form
+          id="form-search"
           class="flex items-center justify-between w-full pr-4 mb-0 bg-white rounded"
         >
           <label for="search" class="sr-only">Rechercher une recette</label>
           <input
-            type="text"
+            type="search"
             name="search"
             id="search"
             placeholder="Rechercher une recette, un ingrédient, ..."
-            class="w-full py-6 font-bold border-none rounded-l text-ellipsis placeholder:font-normal md:px-9"
+            class="w-full py-6 font-bold border-none rounded-l text-ellipsis placeholder:font-normal md:pl-9 md:pr-6"
           />
           <div class="flex items-center">
-            <button
-              type="reset"
-              class="flex-shrink-0 w-[3.1875rem] h-[3.25rem] rounded"
-            >
-              <i
-                class="text-gray fa-solid fa-xmark fa-xl"
-                aria-hidden="true"
-              ></i>
-              <span class="fa-sr-only">Clear</span>
-            </button>
             <button
               type="submit"
               class="flex-shrink-0 bg-gray-dark w-[3.1875rem] h-[3.25rem] rounded"
@@ -83,10 +74,20 @@
               class="flex flex-col justify-start gap-y-6 lg:gap-x-12 lg:flex-row"
             >
               <div
-                class="relative flex items-center justify-between gap-16 p-4 bg-white rounded"
+                id="ingredients-filter"
+                class="relative flex items-center justify-between gap-16"
               >
-                <div>Ingrédients</div>
-                <i class="fa-solid fa-chevron-down"></i>
+                <button
+                  class="flex items-center justify-between w-full p-4 bg-white rounded min-w-48"
+                  aria-expanded="false"
+                  class="pointer"
+                >
+                  Ingrédients
+                  <i
+                    class="pointer-events-none fa-solid fa-chevron-down"
+                    aria-hidden="true"
+                  ></i>
+                </button>
                 <div
                   class="hidden absolute w-full z-10 pt-3.5 bg-white z-2 rounded-b top-[85%] left-0"
                 >
@@ -101,11 +102,15 @@
                         type="text"
                         name="ingredient"
                         id="ingredient"
+                        autocomplete="off"
                         class="w-full border-none rounded-l-xs"
                       />
                       <div class="flex gap-x-2.5 items-center">
                         <button type="reset" class="w-3.5 h-3.5">
-                          <i class="text-gray-mid fa-solid fa-xmark"></i>
+                          <i
+                            class="text-gray-mid fa-solid fa-xmark"
+                            aria-hidden="true"
+                          ></i>
                         </button>
                         <button type="submit" class="w-3.5 h-3.5">
                           <i
@@ -115,27 +120,33 @@
                       </div>
                     </form>
                   </div>
-                  <ul class="flex flex-col pt-[13px] last:rounded">
-                    <li class="flex items-center justify-between active">
-                      Crème de Coco
-                      <button>
-                        <i class="fa-solid fa-circle-xmark"></i>
-                      </button>
-                    </li>
-                    <li>Jus de citron</li>
-                    <li>Glaçons</li>
-                    <li>Tomate</li>
-                    <li>Poivron rouge</li>
-                    <li>Thon en miettes</li>
-                    <li>Vinaigrette</li>
-                  </ul>
+                  <div class="pt-[13px] overflow-y-auto max-h-64">
+                    <div
+                      role="listbox"
+                      class="flex flex-col mb-6 active-keywords-list"
+                    ></div>
+                    <div
+                      role="listbox"
+                      class="flex flex-col keywords-list"
+                    ></div>
+                  </div>
                 </div>
               </div>
               <div
-                class="relative flex items-center justify-between gap-16 p-4 bg-white rounded"
+                id="appliances-filter"
+                class="relative flex items-center justify-between gap-16"
               >
-                <div>Appareils</div>
-                <i class="fa-solid fa-chevron-down"></i>
+                <button
+                  class="flex items-center justify-between w-full p-4 bg-white rounded min-w-48"
+                  aria-expanded="false"
+                  class="pointer"
+                >
+                  Appareils
+                  <i
+                    class="pointer-events-none fa-solid fa-chevron-down"
+                    aria-hidden="true"
+                  ></i>
+                </button>
                 <div
                   class="hidden absolute w-full z-10 pt-3.5 bg-white z-2 rounded-b top-[85%] left-0"
                 >
@@ -150,11 +161,15 @@
                         type="text"
                         name="ingredient"
                         id="ingredient"
+                        autocomplete="off"
                         class="w-full border-none rounded-l-xs"
                       />
                       <div class="flex gap-x-2.5 items-center">
                         <button type="reset" class="w-3.5 h-3.5">
-                          <i class="text-gray-mid fa-solid fa-xmark"></i>
+                          <i
+                            class="text-gray-mid fa-solid fa-xmark"
+                            aria-hidden="true"
+                          ></i>
                         </button>
                         <button type="submit" class="w-3.5 h-3.5">
                           <i
@@ -164,29 +179,35 @@
                       </div>
                     </form>
                   </div>
-                  <ul class="flex flex-col pt-[13px] last:rounded">
-                    <li class="flex items-center justify-between active">
-                      Crème de Coco
-                      <button>
-                        <i class="fa-solid fa-circle-xmark"></i>
-                      </button>
-                    </li>
-                    <li>Jus de citron</li>
-                    <li>Glaçons</li>
-                    <li>Tomate</li>
-                    <li>Poivron rouge</li>
-                    <li>Thon en miettes</li>
-                    <li>Vinaigrette</li>
-                  </ul>
+                  <div class="pt-[13px] overflow-y-auto max-h-64">
+                    <div
+                      role="listbox"
+                      class="flex flex-col mb-6 active-keywords-list"
+                    ></div>
+                    <div
+                      role="listbox"
+                      class="flex flex-col keywords-list"
+                    ></div>
+                  </div>
                 </div>
               </div>
               <div
-                class="relative flex items-center justify-between gap-16 p-4 bg-white rounded"
+                id="ustensils-filter"
+                class="relative flex items-center justify-between gap-16"
               >
-                <div>Ustensiles</div>
-                <i class="fa-solid fa-chevron-down"></i>
+                <button
+                  class="flex items-center justify-between w-full p-4 bg-white rounded min-w-48"
+                  aria-expanded="false"
+                  class="pointer"
+                >
+                  Ustensiles
+                  <i
+                    class="pointer-events-none fa-solid fa-chevron-down"
+                    aria-hidden="true"
+                  ></i>
+                </button>
                 <div
-                  class="hidden lg:block absolute w-full z-10 pt-3.5 bg-white z-2 rounded-b top-[85%] left-0"
+                  class="hidden absolute w-full z-10 pt-3.5 bg-white z-2 rounded-b top-[85%] left-0"
                 >
                   <div class="px-4">
                     <form
@@ -199,11 +220,15 @@
                         type="text"
                         name="ingredient"
                         id="ingredient"
+                        autocomplete="off"
                         class="w-full border-none rounded-l-xs"
                       />
                       <div class="flex gap-x-2.5 items-center">
                         <button type="reset" class="w-3.5 h-3.5">
-                          <i class="text-gray-mid fa-solid fa-xmark"></i>
+                          <i
+                            class="text-gray-mid fa-solid fa-xmark"
+                            aria-hidden="true"
+                          ></i>
                         </button>
                         <button type="submit" class="w-3.5 h-3.5">
                           <i
@@ -213,42 +238,39 @@
                       </div>
                     </form>
                   </div>
-                  <ul class="flex flex-col pt-[13px] last:rounded">
-                    <li class="flex items-center justify-between active">
-                      Crème de Coco
-                      <button>
-                        <i class="fa-solid fa-circle-xmark"></i>
-                      </button>
-                    </li>
-                    <li>Jus de citron</li>
-                    <li>Glaçons</li>
-                    <li>Tomate</li>
-                    <li>Poivron rouge</li>
-                    <li>Thon en miettes</li>
-                    <li>Vinaigrette</li>
-                  </ul>
+                  <div class="pt-[13px] overflow-y-auto max-h-64">
+                    <div
+                      role="listbox"
+                      class="flex flex-col active-keywords-list"
+                    ></div>
+                    <div
+                      role="listbox"
+                      class="flex flex-col keywords-list"
+                    ></div>
+                  </div>
                 </div>
               </div>
             </div>
-            <span class="flex-shrink-0 mb-5 text-xl font-heavy lg:mb-0"
-              >01 recettes</span
-            >
+            <span
+              id="recipes-counter"
+              class="flex-shrink-0 mb-5 text-xl font-heavy lg:mb-0"
+            ></span>
           </div>
-          <div class="flex flex-wrap gap-4">
-            <div
-              class="flex items-center px-4 py-4 rounded-sm gap-x-4 bg-yellow lg:gap-x-14"
-            >
-              <span class="text-sm">Crème de Coco</span>
-              <i class="fa-solid fa-xmark fa-lg" aria-hidden="true"></i>
-            </div>
-          </div>
+          <div id="keywords-tags" class="flex flex-wrap gap-4"></div>
         </div>
+        <p
+          id="message"
+          class="hidden p-8 text-xl text-center bg-white rounded mt-11"
+        >
+          Aucune recette ne contient <strong></strong> vous pouvez chercher «
+          tarte aux pommes », « poisson », ...
+        </p>
         <div
           id="recipes"
-          class="grid grid-cols-1 gap-x-12 gap-y-16 mt-11 lg:grid-cols-3"
+          class="grid grid-cols-1 gap-x-12 gap-y-16 lg:grid-cols-3 mt-11"
         ></div>
       </div>
     </main>
   </body>
-  <script type="module" src="./app/app.js"></script>
+  <script type="module" src="./app/app.js" defer></script>
 </html>
