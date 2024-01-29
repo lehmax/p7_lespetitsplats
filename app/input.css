@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+dd,
 small {
   @apply block text-sm text-gray;
 }
