@@ -100,6 +100,12 @@ const keyWordFilter = (name, keywords, element) => {
   }
 
   const onButtonDropdown = (event) => {
+    document.querySelectorAll('.dropdown').forEach((dropdown) => {
+      if (dropdown !== event.target.nextElementSibling) {
+        dropdown.classList.add('hidden')
+      }
+    })
+
     const isExpanded = event.target.getAttribute('aria-expanded') === 'true'
     const dropdown = event.target.nextElementSibling
     dropdown.classList.toggle('hidden')
