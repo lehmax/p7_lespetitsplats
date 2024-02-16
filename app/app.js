@@ -30,12 +30,10 @@ const app = (initRecipes) => {
   }
 
   const onSearch = () => {
-    toggleNoResultsMessage(false)
     search()
     updateRecipesList()
     updateRecipeCounter()
     updateFilters()
-    toggleNoResultsMessage(state.recipes.length === 0, state.inputText.value)
   }
 
   const search = () => {
@@ -70,8 +68,26 @@ const app = (initRecipes) => {
 
   const updateRecipesList = () => {
     const recipesContainer = document.getElementById('recipes')
+    const messageContainer = document.getElementById('message')
+    const { recipes, inputText } = state
 
-    recipesContainer.innerHTML = state.recipes
+    if (recipes.length === 0) {
+      if (inputText.value.length >= 3) {
+        messageContainer.querySelector('strong').innerText =
+          state.inputText.value
+      }
+
+      messageContainer.classList.remove('hidden')
+      recipesContainer.innerHTML = ''
+
+      return
+    }
+
+    if (!messageContainer.classList.contains('hidden')) {
+      messageContainer.classList.add('hidden')
+    }
+
+    recipesContainer.innerHTML = recipes
       .map((recipe) => {
         return createRecipe(recipe).getHTML()
       })
@@ -82,12 +98,6 @@ const app = (initRecipes) => {
     const counter = document.getElementById('recipes-counter')
     const total = state.recipes.length
     counter.innerText = `${total} ${total > 1 ? 'recettes' : 'recette'}`
-  }
-
-  const toggleNoResultsMessage = (token, value = '') => {
-    const messageContainer = document.getElementById('message')
-    messageContainer.querySelector('strong').innerText = token ? value : ' '
-    messageContainer.classList.toggle('hidden', !token)
   }
 
   return {
