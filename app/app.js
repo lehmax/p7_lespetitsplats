@@ -29,7 +29,7 @@ const app = (initRecipes) => {
     document.addEventListener('searchRecipes', onSearch)
   }
 
-  const onSearch = ({ detail }) => {
+  const onSearch = () => {
     toggleNoResultsMessage(false)
     search()
     updateRecipesList()
