@@ -34,9 +34,7 @@ const app = (initRecipes) => {
     search()
     updateRecipesList()
     updateRecipeCounter()
-    // if (type === 'reset' || type === 'text') {
-    //   createFilters(recipes)
-    // }
+    updateFilters()
     toggleNoResultsMessage(state.recipes.length === 0, state.inputText.value)
   }
 
@@ -60,6 +58,14 @@ const app = (initRecipes) => {
     }
 
     state.recipes = list
+  }
+
+  const updateFilters = () => {
+    const filters = Object.keys(state.inputFilters)
+
+    filters.forEach((key) => {
+      return state.inputFilters[key].updateOptions(state.recipes)
+    })
   }
 
   const updateRecipesList = () => {

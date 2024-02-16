@@ -87,28 +87,19 @@ const keyWordFilter = (name, keywords, element) => {
   const filter = element.querySelector('form')
 
   const init = () => {
-    const clonedButton = buttonDropdown.cloneNode(true)
-    clonedButton.addEventListener('click', handleDropdown)
-    buttonDropdown.replaceWith(clonedButton)
+    buttonDropdown.addEventListener('click', onButtonDropdown)
 
     keyWordList.innerHTML = ''
 
-    if (keywords.length === 0) {
-      keyWordList.innerHTML =
-        '<div class="px-4 py-2 text-sm">Aucun résultat.</div>'
-    }
-
-    keywords.forEach((keyword, index) => {
-      const option = createOption(keyword, index)
+    keywords.forEach((keyword) => {
+      const option = createOption(keyword)
       keyWordList.appendChild(option)
     })
 
     filter.addEventListener('submit', filterOptions)
   }
 
-  const updateOptions = () => {}
-
-  const handleDropdown = (event) => {
+  const onButtonDropdown = (event) => {
     const isExpanded = event.target.getAttribute('aria-expanded') === 'true'
     const dropdown = event.target.nextElementSibling
     dropdown.classList.toggle('hidden')
@@ -136,16 +127,39 @@ const keyWordFilter = (name, keywords, element) => {
     })
 
     if (!isResult) {
-      keyWordList.insertAdjacentHTML(
-        'beforeend',
-        '<div class="no-result px-4 py-2 text-sm">Aucun résultat.</div>'
-      )
+      displayNoResults()
     }
   }
 
-  const createOption = (option, index) => {
+  const updateOptions = (recipes) => {
+    filter.reset()
+    keyWordList.innerHTML = ''
+
+    const keywords = getKeyWords(recipes)[`${name}KeyWords`]
+    const notSelectedKeywords = keywords.filter(
+      (keyword) => !state.value.includes(keyword.toLowerCase())
+    )
+
+    if (keywords.length === 0) {
+      displayNoResults()
+    }
+
+    notSelectedKeywords.forEach((keyword) => {
+      const option = createOption(keyword)
+      keyWordList.appendChild(option)
+    })
+  }
+
+  const displayNoResults = () => {
+    keyWordList.insertAdjacentHTML(
+      'beforeend',
+      '<div class="px-4 py-2 text-sm">Aucun résultat.</div>'
+    )
+  }
+
+  const createOption = (option) => {
     const optionElement = createElement('div', {
-      'data-id': `${name}-${index}`,
+      'data-id': `${option}`,
       class:
         'px-4 py-2 text-sm hover:bg-yellow hover:font-bold cursor-pointer flex justify-between items-center',
       'aria-selected': false,
@@ -162,7 +176,7 @@ const keyWordFilter = (name, keywords, element) => {
     const { target } = event
 
     addOption(target)
-    addTag(target)
+    addTag(target.getAttribute('data-id'))
     state.value.push(target.innerText.trim().toLowerCase())
 
     sendChange()
@@ -172,7 +186,7 @@ const keyWordFilter = (name, keywords, element) => {
     const { target } = event
 
     const tag = keyWordsTags.querySelector(
-      `[data-id=${target.getAttribute('data-id')}]`
+      `[data-id="${target.getAttribute('data-id')}"]`
     )
 
     removeOption(target)
@@ -221,15 +235,15 @@ const keyWordFilter = (name, keywords, element) => {
     )
   }
 
-  const addTag = (option) => {
+  const addTag = (keyword) => {
     const tag = createElement('div', {
-      'data-id': `${option.getAttribute('data-id')}`,
+      'data-id': `${keyword}`,
       class:
         'cursor-pointer flex items-center px-4 py-4 rounded-sm gap-x-4 bg-yellow lg:gap-x-14'
     })
 
     const innerTag = `
-      <span class="text-sm">${option.innerText}</span>
+      <span class="text-sm">${keyword}</span>
       <i class="pointer-events-none fa-solid fa-xmark fa-lg" aria-hidden="true"></i>
     `
 
