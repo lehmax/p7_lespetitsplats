@@ -1,9 +1,11 @@
+import { filterType } from '../app.js'
+
 export const searchInput = () => {
   const formSearch = document.getElementById('form-search')
   const inputSearch = formSearch.querySelector('input[type="search"]')
   const state = { value: '' }
 
-  const invalidMsg = `
+  const innerInvalidMsg = `
     <span
       class="absolute
       left-0 py-2 text-xs
@@ -26,20 +28,23 @@ export const searchInput = () => {
 
     state.value = inputSearch.value.trim()
     formSearch.classList.remove('error')
-    if (inputSearch.nextElementSibling) {
-      inputSearch.nextElementSibling.remove()
+
+    const invalidMsgElement = formSearch.querySelector('.invalid')
+    if (invalidMsgElement) {
+      invalidMsgElement.remove()
     }
 
     const isInvalid = state.value.length < 3
     if (isInvalid) {
       formSearch.classList.add('error')
-      inputSearch.insertAdjacentHTML('afterend', invalidMsg)
+      formSearch.insertAdjacentHTML('beforeEnd', innerInvalidMsg)
     }
 
     formSearch.dispatchEvent(
-      new Event('searchRecipes', {
+      new CustomEvent('searchRecipes', {
         bubbles: true,
-        cancelable: true
+        cancelable: true,
+        detail: { type: filterType.TXT }
       })
     )
   }

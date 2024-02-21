@@ -1,3 +1,5 @@
+import { filterType } from '../app.js'
+import { sortArrayAlphabeticaly } from '../utils/array.js'
 import { createElement } from '../utils/dom.js'
 import { toSentenceCase } from '../utils/string.js'
 
@@ -5,70 +7,75 @@ export const createFilters = (recipes) => {
   const ingredientsFilter = document.getElementById('ingredients-filter')
   const appliancesFilter = document.getElementById('appliances-filter')
   const ustensilsFilter = document.getElementById('ustensils-filter')
-
-  const { ingredientsKeyWords, appliancesKeyWords, ustensilsKeyWords } =
-    getKeyWords(recipes)
+  const keyWords = createKeyWords(recipes)
 
   return {
     ingredients: keyWordFilter(
       'ingredients',
-      ingredientsKeyWords,
+      keyWords.ingredients(),
       ingredientsFilter
     ),
     appliances: keyWordFilter(
       'appliances',
-      appliancesKeyWords,
+      keyWords.appliances(),
       appliancesFilter
     ),
-    ustensils: keyWordFilter('ustensils', ustensilsKeyWords, ustensilsFilter)
+    ustensils: keyWordFilter('ustensils', keyWords.ustensils(), ustensilsFilter)
   }
 }
 
-const getKeyWords = (recipes) => {
-  const keywords = recipes.reduce(
-    (keywords, recipe) => {
-      const { appliance, ustensils, ingredients } = recipe
-      const { ingredientsKeyWords, appliancesKeyWords, ustensilsKeyWords } =
-        keywords
+const createKeyWords = (recipes) => {
+  const ingredients = () => {
+    const ingredients = recipes.reduce((ingredients, { ingredients: ings }) => {
+      ings.forEach(({ ingredient }) => {
+        const ingredientKW = toSentenceCase(ingredient)
 
-      ingredients.forEach((item) => {
-        const ingredientKW = toSentenceCase(item.ingredient)
-
-        if (!ingredientsKeyWords.includes(ingredientKW)) {
-          ingredientsKeyWords.push(ingredientKW)
+        if (!ingredients.includes(ingredientKW)) {
+          ingredients.push(ingredientKW)
         }
       })
 
-      const applianceKW = toSentenceCase(appliance)
+      return ingredients
+    }, [])
 
-      if (!appliancesKeyWords.includes(applianceKW)) {
-        appliancesKeyWords.push(applianceKW)
-      }
-
-      ustensils.forEach((ustensil) => {
-        const ustensilKW = toSentenceCase(ustensil)
-
-        if (!ustensilsKeyWords.includes(ustensilKW)) {
-          ustensilsKeyWords.push(ustensilKW)
-        }
-      })
-
-      return keywords
-    },
-    {
-      ingredientsKeyWords: [],
-      appliancesKeyWords: [],
-      ustensilsKeyWords: []
-    }
-  )
-
-  for (const key in keywords) {
-    keywords[key] = keywords[key].sort((kw1, kw2) =>
-      kw1.localeCompare(kw2, 'fr', { ignorePunctuation: true })
-    )
+    return sortArrayAlphabeticaly(ingredients)
   }
 
-  return keywords
+  const appliances = () => {
+    const appliances = recipes.reduce((appliances, { appliance }) => {
+      const applianceKW = toSentenceCase(appliance)
+
+      if (!appliances.includes(applianceKW)) {
+        appliances.push(applianceKW)
+      }
+
+      return appliances
+    }, [])
+
+    return sortArrayAlphabeticaly(appliances)
+  }
+
+  const ustensils = () => {
+    const ustensils = recipes.reduce((ustensils, { ustensils: ustls }) => {
+      ustls.forEach((ustensil) => {
+        const ustensilKW = toSentenceCase(ustensil)
+
+        if (!ustensils.includes(ustensilKW)) {
+          ustensils.push(ustensilKW)
+        }
+      })
+
+      return ustensils
+    }, [])
+
+    return sortArrayAlphabeticaly(ustensils)
+  }
+
+  return {
+    ingredients,
+    appliances,
+    ustensils
+  }
 }
 
 const keyWordFilter = (name, keywords, element) => {
@@ -141,7 +148,7 @@ const keyWordFilter = (name, keywords, element) => {
     filter.reset()
     keyWordList.innerHTML = ''
 
-    const keywords = getKeyWords(recipes)[`${name}KeyWords`]
+    const keywords = createKeyWords(recipes)[name]()
     const notSelectedKeywords = keywords.filter(
       (keyword) => !state.value.includes(keyword.toLowerCase())
     )
@@ -157,10 +164,12 @@ const keyWordFilter = (name, keywords, element) => {
   }
 
   const displayNoResults = () => {
-    keyWordList.insertAdjacentHTML(
-      'beforeend',
-      '<div class="px-4 py-2 text-sm">Aucun résultat.</div>'
-    )
+    if (keyWordList.querySelector('.no-result') === null) {
+      keyWordList.insertAdjacentHTML(
+        'beforeend',
+        '<div class="px-4 py-2 text-sm no-result">Aucun résultat.</div>'
+      )
+    }
   }
 
   const createOption = (option) => {
@@ -221,9 +230,10 @@ const keyWordFilter = (name, keywords, element) => {
   }
 
   const sendChange = () => {
-    const event = new Event('searchRecipes', {
+    const event = new CustomEvent('searchRecipes', {
       bubbles: true,
-      cancelable: true
+      cancelable: true,
+      detail: { type: filterType.KEYWORDS }
     })
 
     element.dispatchEvent(event)

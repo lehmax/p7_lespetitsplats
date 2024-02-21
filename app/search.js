@@ -19,21 +19,27 @@ export const searchRecipesByKeyWords = (filters, recipes) => {
     const { value: selectedAppliances } = filters.appliances.state
     const { value: selectedUstensils } = filters.ustensils.state
 
-    const matchInIngredients = selectedIngredients.length
-      ? ingredients.some(({ ingredient }) => {
-          return selectedIngredients.includes(ingredient.toLowerCase())
-        })
-      : true
+    let matchInIngredients = true
+    let matchInUstensils = true
+    let matchInAppliance = true
 
-    const matchInAppliance = selectedAppliances.length
-      ? selectedAppliances.includes(appliance.toLowerCase())
-      : true
+    if (selectedIngredients.length > 0) {
+      matchInIngredients = selectedIngredients.every((selection) =>
+        ingredients
+          .map(({ ingredient }) => ingredient.toLowerCase())
+          .includes(selection)
+      )
+    }
 
-    const matchInUstensils = selectedUstensils.length
-      ? ustensils.some((ustensil) => {
-          return selectedUstensils.includes(ustensil.toLowerCase())
-        })
-      : true
+    if (selectedAppliances.length > 0) {
+      matchInAppliance = selectedAppliances.includes(appliance.toLowerCase())
+    }
+
+    if (selectedUstensils.length > 0) {
+      matchInUstensils = selectedUstensils.every((selection) =>
+        ustensils.map((ustensil) => ustensil.toLowerCase()).includes(selection)
+      )
+    }
 
     return matchInIngredients && matchInAppliance && matchInUstensils
   })
