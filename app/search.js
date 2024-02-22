@@ -1,16 +1,39 @@
 export const searchRecipesByText = (value, recipes) => {
-  return recipes.filter(({ name, ingredients, description }) => {
-    const lowValue = value.trim().toLowerCase()
+  let recipesFiltered = []
+  const lowValue = value.trim().toLowerCase()
+
+  for (let step = 0; step < recipes.length; step++) {
+    const { name, ingredients, description } = recipes[step]
 
     const matchInName = name.toLowerCase().includes(lowValue)
+
+    if (matchInName) {
+      recipesFiltered = [...recipesFiltered, recipes[step]]
+      continue
+    }
+
     const matchInDescription = description.toLowerCase().includes(lowValue)
+    if (matchInDescription) {
+      recipesFiltered = [...recipesFiltered, recipes[step]]
+      continue
+    }
 
-    const matchInIngredients = ingredients.some(({ ingredient }) => {
-      return ingredient.toLowerCase().includes(lowValue)
-    })
+    let matchInIngredients = false
+    for (let step = 0; step < ingredients.length; step++) {
+      const { ingredient } = ingredients[step]
+      if (ingredient.toLowerCase().includes(lowValue)) {
+        matchInIngredients = true
+        break
+      }
+    }
 
-    return matchInName || matchInDescription || matchInIngredients
-  })
+    if (matchInIngredients) {
+      recipesFiltered = [...recipesFiltered, recipes[step]]
+      continue
+    }
+  }
+
+  return recipesFiltered
 }
 
 export const searchRecipesByKeyWords = (filters, recipes) => {
