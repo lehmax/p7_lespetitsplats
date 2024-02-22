@@ -3,13 +3,18 @@ export const searchRecipesByText = (value, recipes) => {
     const lowValue = value.trim().toLowerCase()
 
     const matchInName = name.toLowerCase().includes(lowValue)
+    if (matchInName) return true
+
     const matchInDescription = description.toLowerCase().includes(lowValue)
+    if (matchInDescription) return true
 
     const matchInIngredients = ingredients.some(({ ingredient }) => {
       return ingredient.toLowerCase().includes(lowValue)
     })
 
-    return matchInName || matchInDescription || matchInIngredients
+    if (matchInIngredients) return true
+
+    return false
   })
 }
 
